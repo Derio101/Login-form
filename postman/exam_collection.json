@@ -1,0 +1,298 @@
+{
+    "info": {
+      "_postman_id": "57e9a762-6b35-4fc3-8a3b-f5b1bb3f8f2c",
+      "name": "NCIS403 Web Application API Tests",
+      "description": "Postman collection for testing the Web Application API endpoints",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Setup",
+        "description": "Set environment variables for testing",
+        "item": [
+          {
+            "name": "Set Base URL",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.environment.set(\"baseUrl\", \"http://localhost:5000\");"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": ""
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Register User",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/register",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "register"]
+          },
+          "description": "Register a new user with valid data"
+        },
+        "response": []
+      },
+      {
+        "name": "Register User (Invalid Email)",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"invalidemail\",\n    \"password\": \"password123\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/register",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "register"]
+          },
+          "description": "Attempt to register a user with an invalid email format"
+        },
+        "response": []
+      },
+      {
+        "name": "Register User (Short Password)",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"short\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/register",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "register"]
+          },
+          "description": "Attempt to register a user with a password less than 8 characters"
+        },
+        "response": []
+      },
+      {
+        "name": "Login User",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/login",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "login"]
+          },
+          "description": "Login with valid credentials"
+        },
+        "response": []
+      },
+      {
+        "name": "Login User (Incorrect Password)",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"wrongpassword\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/login",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "login"]
+          },
+          "description": "Attempt to login with incorrect password"
+        },
+        "response": []
+      },
+      {
+        "name": "Get Profile (With API Key)",
+        "request": {
+          "method": "GET",
+          "header": [
+            {
+              "key": "X-API-Key",
+              "value": "EXAM2024-KEY-5678"
+            }
+          ],
+          "url": {
+            "raw": "{{baseUrl}}/api/profile",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "profile"]
+          },
+          "description": "Get user profile data with valid API key"
+        },
+        "response": []
+      },
+      {
+        "name": "Get Profile (Without API Key)",
+        "request": {
+          "method": "GET",
+          "header": [],
+          "url": {
+            "raw": "{{baseUrl}}/api/profile",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "profile"]
+          },
+          "description": "Attempt to get user profile data without API key"
+        },
+        "response": []
+      },
+      {
+        "name": "Update Username (With API Key)",
+        "request": {
+          "method": "PATCH",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "X-API-Key",
+              "value": "EXAM2024-KEY-5678"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"userId\": \"{{userId}}\",\n    \"username\": \"updatedUsername\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/profile",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "profile"]
+          },
+          "description": "Update username with valid API key"
+        },
+        "response": []
+      },
+      {
+        "name": "Update Username (Special Characters)",
+        "request": {
+          "method": "PATCH",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "X-API-Key",
+              "value": "EXAM2024-KEY-5678"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"userId\": \"{{userId}}\",\n    \"username\": \"invalid@username!#$\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/profile",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "profile"]
+          },
+          "description": "Attempt to update username with special characters"
+        },
+        "response": []
+      },
+      {
+        "name": "Update Username (Empty Username)",
+        "request": {
+          "method": "PATCH",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "X-API-Key",
+              "value": "EXAM2024-KEY-5678"
+            }
+          ],
+          "body": {
+            "mode": "raw",
+            "raw": "{\n    \"userId\": \"{{userId}}\",\n    \"username\": \"\"\n}"
+          },
+          "url": {
+            "raw": "{{baseUrl}}/api/profile",
+            "host": ["{{baseUrl}}"],
+            "path": ["api", "profile"]
+          },
+          "description": "Attempt to update username with an empty string"
+        },
+        "response": []
+      }
+    ],
+    "event": [
+      {
+        "listen": "prerequest",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            ""
+          ]
+        }
+      },
+      {
+        "listen": "test",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            ""
+          ]
+        }
+      }
+    ],
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:5000",
+        "type": "string"
+      },
+      {
+        "key": "userId",
+        "value": "",
+        "type": "string"
+      }
+    ]
+  }
